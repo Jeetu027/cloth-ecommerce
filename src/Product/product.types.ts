@@ -9,3 +9,14 @@ export interface ProductType {
   quantity: number;
   product_image: string;
 }
+
+export interface ProductTypeUpdate {
+  name?: string;
+  description?: string;
+  parent_product_id?: string;
+  color?: string;
+  size?: string;
+  price?: number;
+  quantity?: number;
+  product_image?: string;
+}

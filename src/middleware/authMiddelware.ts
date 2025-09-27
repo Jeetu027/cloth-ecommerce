@@ -30,19 +30,6 @@ export const authMiddleware = async (
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    // if (!token) {
-    //   return res
-    //     .status(401)
-    //     .json({ message: "No token provided, Unauthorized" });
-    // }
-
-    // // Verify token
-    // const decodedToken = verifyToken(token) as { id: string };
-
-    // if (!decodedToken || !decodedToken.id) {
-    //   return res.status(401).json({ message: "Invalid or expired token" });
-    // }
-
     const user = await getUserById(decodedToken.id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });

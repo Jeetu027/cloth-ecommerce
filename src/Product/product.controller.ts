@@ -1,7 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 import { CustomRequest } from "../middleware/authMiddelware";
-import { createProduct, findAllProduct } from "./product.service";
-import { ProductType } from "./product.types";
+import {
+  createProduct,
+  findAllProduct,
+  findProductById,
+  updateProduct,
+} from "./product.service";
+import { ProductType, ProductTypeUpdate } from "./product.types";
 
 export const createNewProduct = async (
   req: Request,
@@ -29,33 +34,33 @@ export const getAllProducts = async (
   }
 };
 
-// export const getProductbyId = async (
-//   req: CustomRequest,
-//   res: Response,
-//   next: NextFunction
-// ) => {
-//   try {
-//     const { id } = req.params;
-//     const result = await findById(id);
-//     res.status(200).json(result);
-//   } catch (error) {
-//     next(error);
-//   }
-// };
+export const getProductbyId = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params;
+    const result = await findProductById(id);
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+};
 
-// export const updateProductById = async (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) => {
-//   try {
-//     const { id } = req.params;
-//     const result = await updateProduct(id, req.body as ProductTypeUpdate);
-//     res.status(200).json(result);
-//   } catch (error) {
-//     next(error);
-//   }
-// };
+export const updateProductById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params;
+    const result = await updateProduct(id, req.body as ProductTypeUpdate);
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+};
 
 // export const deleteProductById = async (
 //   req: Request,

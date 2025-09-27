@@ -7,6 +7,7 @@ import dotenv from "dotenv";
 import { authRoutes } from "./auth/auth.routes";
 import { userRoutes } from "./user/user.routes";
 import { productRoutes } from "./Product/product.routes";
+import { addressRoutes } from "./address/address.routes";
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.use(authMiddleware);
 
 app.use("/user", userRoutes);
 app.use("/product", productRoutes);
+app.use("/address", addressRoutes);
 app.use(ErrorHandler);
 
 app.get("/", (req, res) => {
