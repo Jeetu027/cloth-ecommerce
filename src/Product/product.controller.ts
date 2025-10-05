@@ -9,7 +9,7 @@ import {
 import { ProductType, ProductTypeUpdate } from "./product.types";
 
 export const createNewProduct = async (
-  req: Request,
+  req: CustomRequest,
   res: Response,
   next: NextFunction
 ) => {
@@ -22,12 +22,13 @@ export const createNewProduct = async (
 };
 
 export const getAllProducts = async (
-  req: Request,
+  req: CustomRequest,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const result = await findAllProduct();
+    const query = req.query;
+    const result = await findAllProduct(query);
     res.status(200).json(result);
   } catch (error) {
     next(error);
@@ -49,7 +50,7 @@ export const getProductbyId = async (
 };
 
 export const updateProductById = async (
-  req: Request,
+  req: CustomRequest,
   res: Response,
   next: NextFunction
 ) => {
@@ -61,17 +62,3 @@ export const updateProductById = async (
     next(error);
   }
 };
-
-// export const deleteProductById = async (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) => {
-//   try {
-//     const { id } = req.params;
-//     const result = await deleteProduct(id);
-//     res.status(200).json(result);
-//   } catch (error) {
-//     next(error);
-//   }
-// };

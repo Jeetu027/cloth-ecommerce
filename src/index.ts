@@ -8,6 +8,7 @@ import { authRoutes } from "./auth/auth.routes";
 import { userRoutes } from "./user/user.routes";
 import { productRoutes } from "./Product/product.routes";
 import { addressRoutes } from "./address/address.routes";
+import { cartRoutes } from "./cart/cart.routes";
 
 dotenv.config();
 
@@ -19,12 +20,13 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/auth", authRoutes);
+app.use("/product", productRoutes);
 
 app.use(authMiddleware);
 
 app.use("/user", userRoutes);
-app.use("/product", productRoutes);
 app.use("/address", addressRoutes);
+app.use("/cart", cartRoutes);
 app.use(ErrorHandler);
 
 app.get("/", (req, res) => {

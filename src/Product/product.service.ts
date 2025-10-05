@@ -37,16 +37,46 @@ export const createProduct = async (productdata: ProductType) => {
   );
 };
 
-export const findAllProduct = async () => {
-  const result = await pool.query("SELECT * FROM product ORDER BY id ASC");
+export const findAllProduct = async (query?: any) => {
+  let whereCondition = " where 1=1 ";
+
+  if (query.isParentProduct == "true") {
+    whereCondition += " AND parent_product_id IS NULL ";
+  }
+  const limit = parseInt(query?.limit) || 4; // default 4 products per page
+  const page = parseInt(query?.page) || 1;
+
+  const offset = (page - 1) * limit;
+
+  const result: QueryResult<ProductType[]> = await pool.query(
+    `SELECT * FROM product ${whereCondition} ORDER BY id ASC LIMIT $1 OFFSET $2`,
+    [limit, offset]
+  );
   if (result.rows.length === 0) {
     throw new CustomError("Product not found!", 404);
   }
-  return result.rows;
+  const countResult = await pool.query(
+    `SELECT COUNT(*) AS total FROM product ${whereCondition}`
+  );
+  const total = parseInt(countResult.rows[0].total);
+  const totalPages = Math.ceil(total / limit);
+
+  return {
+    data: result.rows,
+    pagination: {
+      total,
+      totalPages,
+      currentPage: page,
+      limit,
+    },
+  };
 };
 
 export const findProductById = async (id: string) => {
-  const result = await pool.query("SELECT * FROM product WHERE id = $1", [id]);
+  const result: QueryResult<ProductType> = await pool.query(
+    "SELECT * FROM product WHERE id = $1",
+    [id]
+  );
   if (result.rows.length === 0) {
     throw new CustomError(`Product with ID ${id} not found!`, 404);
   }
@@ -55,14 +85,12 @@ export const findProductById = async (id: string) => {
 
 export const updateProduct = async (
   id: string,
-  foodTypeUpdate: ProductTypeUpdate
+  ProductTypeUpdate: ProductTypeUpdate
 ) => {
   const oldData = await findProductById(id);
   const updatedData = {
     ...oldData,
-    ...Object.fromEntries(
-      Object.entries(foodTypeUpdate).filter(([_, value]) => value !== undefined)
-    ),
+    ...ProductTypeUpdate,
   };
   const {
     name,

@@ -6,6 +6,7 @@ import { getUserById } from "../user/user.service";
 
 export interface CustomRequest extends Request {
   user?: UserType;
+  file?: any;
 }
 
 export const authMiddleware = async (

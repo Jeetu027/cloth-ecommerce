@@ -36,10 +36,10 @@ const loginCurrentUser = async (
 
     // // Set token in HTTP-only cookie
     res.cookie("token", result.token, {
-      httpOnly: true, // Secure against XSS
+      httpOnly: false, // Secure against XSS
       secure: process.env.NODE_ENV === "production", // Use HTTPS in production
       sameSite: "strict", // Prevent CSRF
-      maxAge: 1000 * 60 * 60, // 1 hour
+      maxAge: 1000 * 60 * 60 * 24, // 1 hour
     });
 
     res.status(200).json({

@@ -8,3 +8,12 @@ export interface AddressType {
   state: string;
   country: string;
 }
+
+export interface AddressTypeUpdate {
+  address_line1?: string;
+  address_line2?: string;
+  city?: string;
+  pincode?: string;
+  state?: string;
+  country?: string;
+}
