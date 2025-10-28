@@ -7,6 +7,7 @@ import {
   updateProduct,
 } from "./product.service";
 import { ProductType, ProductTypeUpdate } from "./product.types";
+import { uploadImage } from "../cloudinary/cloudinary.service";
 
 export const createNewProduct = async (
   req: CustomRequest,
@@ -14,6 +15,14 @@ export const createNewProduct = async (
   next: NextFunction
 ) => {
   try {
+    if (!req.file) return res.status(400).json({ message: "No file uploaded" });
+    const base64Image = `data:${
+      req.file.mimetype
+    };base64,${req.file.buffer.toString("base64")}`;
+
+    const resultImage = await uploadImage(base64Image);
+
+    req.body.product_image = resultImage.url;
     const result = await createProduct(req.body as ProductType);
     res.status(201).json(result);
   } catch (error) {

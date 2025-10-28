@@ -35,6 +35,8 @@ export const createProduct = async (productdata: ProductType) => {
       product_image,
     ]
   );
+
+  return result;
 };
 
 export const findAllProduct = async (query?: any) => {
