@@ -12,6 +12,5 @@ export const authRoutes = express.Router();
 
 authRoutes.post("/register", createNewUser);
 authRoutes.post("/login", loginCurrentUser);
-// router.get("/getuser", authMiddleware, getCurrentUser);
 authRoutes.post("/reset-password", resetPassword);
 authRoutes.post("/update-password", authMiddleware, updateUserPassword);
